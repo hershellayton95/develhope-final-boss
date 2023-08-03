@@ -8,8 +8,8 @@ Le informazioni sono salvate su file in formato json, _"./Data/projects.json"_ c
 
 L'applicazione dovrà contenere i seguenti flussi, **in ordine di priorità**:
 - Get che ritorna la lista di progetti
-- Get che ritorna un progetto a partire da Id (comprese le sue attività)
 - Get che ritorna i progetti non ancora consegnati (DeliveryDate non ancora passata)
+- Get che ritorna un progetto a partire da Id (comprese le sue attività)
 - Creazione progetto
 - Creazione attività
 - Modifica progetto
