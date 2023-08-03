@@ -27,10 +27,30 @@ namespace Develhope.Controllers
             return await _projectService.GetAllAsync();
         }
 
+        [HttpGet]
+        [Route("{id}")]
+        public Task<List<ProjectListDto>> GetByIdAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         [HttpPost]
         public async Task CretateAsync([FromBody] Project project)
         {
             await _projectService.CreateAsync(project);
+        }
+
+        [HttpPut]
+        public Task UpdateAsync([FromBody] Project project)
+        {
+            throw new NotImplementedException();
+        }
+
+        [HttpDelete]
+        [Route("{id}")]
+        public Task DeleteAsync(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }
