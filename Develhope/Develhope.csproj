@@ -13,4 +13,13 @@
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.5.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="Data\jobs.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Data\projects.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

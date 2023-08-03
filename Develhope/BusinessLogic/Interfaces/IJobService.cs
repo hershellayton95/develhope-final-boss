@@ -7,11 +7,11 @@ using Develhope.Models.DTOs;
 
 namespace Develhope.BusinessLogic.Interfaces
 {
-    public interface IProjectService
+    public interface IJobService
     {
-        Task<List<ProjectListDto>> GetAllAsync();
-        Task CreateAsync(Project project);
-        Task UpdateAsync(Project project);
+        Task<List<JobListDto>> GetAllAsync();
+        Task CreateAsync(Job job);
+        Task UpdateAsync(Job job);
         Task DeleteByIdAsync(int id);
     }
 }

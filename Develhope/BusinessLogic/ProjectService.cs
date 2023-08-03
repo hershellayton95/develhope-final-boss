@@ -16,11 +16,17 @@ namespace Develhope.BusinessLogic
         public ProjectService(IRepository<Project> repository)
         {
             _projectRepository = repository;
+            
         }
 
         public async Task CreateAsync(Project project)
         {
             await _projectRepository.CreateAsync(project);
+        }
+
+        public async Task DeleteByIdAsync(int id)
+        {
+            await _projectRepository.DeleteByIdAsync(id);
         }
 
         public async Task<List<ProjectListDto>> GetAllAsync()
@@ -32,6 +38,11 @@ namespace Develhope.BusinessLogic
                     Title = x.Title,
                     DeliveryDate = x.DeliveryDate
                 });
+        }
+
+        public async Task UpdateAsync(Project project)
+        {
+            await _projectRepository.UpdateAsync(project);
         }
     }
 }

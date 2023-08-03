@@ -14,6 +14,8 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddSingleton<IProjectService, ProjectService>();
 builder.Services.AddSingleton<IRepository<Project>, ProjectRepository>();
+builder.Services.AddSingleton<IJobService, JobService>();
+builder.Services.AddSingleton<IRepository<Job>, JobRepository>();
 
 var app = builder.Build();
 

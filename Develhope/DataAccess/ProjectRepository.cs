@@ -1,9 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
+using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
+using Develhope.BusinessLogic.Interfaces;
 using Develhope.DataAccess.Interfaces;
 using Develhope.Models;
 using Develhope.Shared;
+using Microsoft.Extensions.Options;
 
 namespace Develhope.DataAccess
 {
@@ -11,29 +16,88 @@ namespace Develhope.DataAccess
     {
         private static readonly string _PROJECT_DATA_PATH = Constants.DATA_PATH + "projects.json";
 
-        public Task CreateAsync(Project item)
+        private readonly IJobService _jobService; 
+        public ProjectRepository(IJobService jobService)
         {
-            throw new NotImplementedException();
+             _jobService = jobService;
         }
 
-        public Task DeleteByIdAsync(int id)
+        public async Task CreateAsync(Project item)
         {
-            throw new NotImplementedException();
+            var json = await File.ReadAllTextAsync(_PROJECT_DATA_PATH);
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            };
+            var projects = JsonSerializer.Deserialize<List<Project>>(json, options);
+
+            projects.Add(item);
+
+            var jsonProjects = JsonSerializer.Serialize(projects, options);
+
+            await File.WriteAllTextAsync(_PROJECT_DATA_PATH, jsonProjects);
         }
 
-        public Task<List<Project>> GetAllAsync()
+        public async Task DeleteByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var json = await File.ReadAllTextAsync(_PROJECT_DATA_PATH);
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            };
+            var projects = JsonSerializer.Deserialize<List<Project>>(json, options);
+            var productToUpdate = projects.Where(product => product.Id == id).First();
+
+            await _jobService.DeleteByIdAsync(productToUpdate.Id);
+            projects.Remove(productToUpdate);
+
+            var jsonProjects = JsonSerializer.Serialize(projects, options);
+
+            await File.WriteAllTextAsync(_PROJECT_DATA_PATH, jsonProjects);
         }
 
-        public Task<Project> GetByIdAsync(int id)
+        public async Task<List<Project>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            var json = await File.ReadAllTextAsync(_PROJECT_DATA_PATH);
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            };
+            var projects = JsonSerializer.Deserialize<List<Project>>(json, options);
+            return projects;
+
         }
 
-        public Task UpdateAsync(Project item)
+        public async Task<Project> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var json = await File.ReadAllTextAsync(_PROJECT_DATA_PATH);
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            };
+            var product = JsonSerializer
+                .Deserialize<List<Project>>(json, options)
+                .Where(item => item.Id == id).First();
+            return product;
+        }
+
+        public async Task UpdateAsync(Project item)
+        {
+            var json = await File.ReadAllTextAsync(_PROJECT_DATA_PATH);
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            };
+            var projects = JsonSerializer.Deserialize<List<Project>>(json, options);
+            var productToUpdate = projects.Where(product => product.Id == item.Id).First();
+
+            productToUpdate.Title = item.Title;
+            productToUpdate.Description = item.Description;
+            productToUpdate.DeliveryDate = item.DeliveryDate;
+
+            var jsonProjects = JsonSerializer.Serialize(projects, options);
+
+            await File.WriteAllTextAsync(_PROJECT_DATA_PATH, jsonProjects);
         }
     }
 }

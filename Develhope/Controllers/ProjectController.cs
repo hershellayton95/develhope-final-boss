@@ -28,10 +28,22 @@ namespace Develhope.Controllers
         }
 
         [HttpGet]
-        [Route("{id}")]
-        public Task<List<ProjectListDto>> GetByIdAsync(int id)
+        [Route("Ongoing")]
+        public async Task<List<ProjectListDto>> GetOnGoing()
         {
-            throw new NotImplementedException();
+            return (await _projectService.GetAllAsync())
+                .Where(project => DateTime
+                .Compare(project.DeliveryDate, DateTime.Now) > 0 )
+                .ToList();
+        }
+
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<ProjectListDto> GetByIdAsync(int id)
+        {
+            return (await _projectService
+                .GetAllAsync())
+                .Where(project => project.Id == id).First();
         }
 
         [HttpPost]
@@ -41,16 +53,16 @@ namespace Develhope.Controllers
         }
 
         [HttpPut]
-        public Task UpdateAsync([FromBody] Project project)
+        public  async Task UpdateAsync([FromBody] Project project)
         {
-            throw new NotImplementedException();
+            await _projectService.UpdateAsync(project);
         }
 
         [HttpDelete]
         [Route("{id}")]
-        public Task DeleteAsync(int id)
+        public async Task DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            await _projectService.DeleteByIdAsync(id);
         }
     }
 }
